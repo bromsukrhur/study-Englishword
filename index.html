@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>English Today ✦</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&family=DM+Mono&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #0d0c14;
+  --surface: #17152b;
+  --surface2: #211e35;
+  --border: rgba(255,255,255,0.07);
+  --accent: #ff6b6b;
+  --gold: #ffd166;
+  --green: #06d6a0;
+  --blue: #4cc9f0;
+  --text: #f0eeff;
+  --muted: #8b8aab;
+  --radius: 18px;
+}
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:'DM Sans',sans-serif;
+  background:var(--bg);
+  color:var(--text);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+body::before{
+  content:'';position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse 600px 400px at 10% 10%, rgba(255,107,107,0.09) 0%,transparent 60%),
+    radial-gradient(ellipse 500px 500px at 90% 90%, rgba(76,201,240,0.07) 0%,transparent 60%);
+  pointer-events:none;z-index:0;
+}
+
+.app{position:relative;z-index:1;max-width:460px;margin:0 auto;padding:20px 16px 100px;}
+
+.header{text-align:center;padding:28px 0 18px;}
+.header h1{
+  font-family:'Playfair Display',serif;font-size:2.1rem;letter-spacing:-0.5px;
+  background:linear-gradient(135deg,#ff6b6b 0%,#ffd166 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.header p{color:var(--muted);font-size:0.82rem;margin-top:5px;font-weight:300;letter-spacing:0.3px;}
+
+.level-wrap{background:var(--surface);border:1px solid var(--border);border-radius:50px;padding:4px;display:flex;gap:4px;margin-bottom:20px;}
+.lbtn{
+  flex:1;padding:9px 4px;border:none;border-radius:50px;cursor:pointer;
+  font-family:'DM Sans',sans-serif;font-size:0.8rem;font-weight:500;
+  background:transparent;color:var(--muted);transition:all .25s;
+}
+.lbtn.active{
+  background:linear-gradient(135deg,var(--accent),#ff9f43);
+  color:#fff;box-shadow:0 4px 18px rgba(255,107,107,0.35);
+}
+
+.tabs{display:flex;gap:6px;margin-bottom:18px;overflow-x:auto;scrollbar-width:none;padding-bottom:2px;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{
+  flex-shrink:0;padding:8px 15px;border-radius:50px;
+  border:1px solid var(--border);background:transparent;
+  font-family:'DM Sans',sans-serif;font-size:0.8rem;font-weight:500;
+  cursor:pointer;transition:all .2s;color:var(--muted);
+}
+.tab.active{background:var(--surface2);border-color:rgba(255,255,255,0.18);color:var(--text);}
+
+.sec{display:none;}
+.sec.active{display:block;animation:fadeUp .35s ease;}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
+
+.card{
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:var(--radius);padding:20px;margin-bottom:12px;
+}
+
+/* WORD */
+.word-card{position:relative;overflow:hidden;}
+.word-card::before{
+  content:'';position:absolute;top:-30px;right:-30px;
+  width:130px;height:130px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,209,102,0.08),transparent 70%);
+  pointer-events:none;
+}
+.word-num{font-size:0.7rem;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:8px;}
+.word-en{font-family:'Playfair Display',serif;font-size:1.9rem;color:var(--gold);margin-bottom:2px;}
+.word-ko{font-size:0.95rem;color:var(--text);font-weight:500;margin-bottom:6px;}
+.word-pos{display:inline-block;font-size:0.7rem;padding:2px 8px;border-radius:20px;background:rgba(6,214,160,0.12);color:var(--green);margin-bottom:10px;font-family:'DM Mono',monospace;}
+.word-ex{font-size:0.85rem;color:var(--muted);line-height:1.7;font-style:italic;border-left:2px solid rgba(255,209,102,0.3);padding-left:10px;}
+.word-ex span{color:var(--gold);font-style:normal;font-weight:500;}
+.word-ex-ko{font-size:0.78rem;color:var(--muted);margin-top:5px;font-style:normal;}
+
+.word-dots{display:flex;gap:6px;justify-content:center;margin-top:6px;}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--surface2);cursor:pointer;transition:all .2s;}
+.dot.active{background:var(--gold);}
+
+/* IDIOMS */
+.idiom-section{margin-top:14px;border-top:1px solid var(--border);padding-top:12px;}
+.idiom-label{font-size:0.7rem;font-family:'DM Mono',monospace;color:var(--blue);margin-bottom:8px;letter-spacing:0.05em;}
+.idiom-item{margin-bottom:8px;padding:8px 10px;background:rgba(76,201,240,0.05);border-radius:10px;border-left:2px solid rgba(76,201,240,0.3);}
+.idiom-en{font-size:0.82rem;color:var(--blue);font-style:italic;margin-bottom:2px;}
+.idiom-ko{font-size:0.75rem;color:var(--muted);}
+
+/* DATE+WEATHER BAR */
+.date-weather{display:flex;align-items:center;gap:8px;font-size:0.78rem;color:var(--muted);margin-bottom:14px;flex-wrap:wrap;}
+.date-weather .dw-date{color:var(--text);font-weight:500;}
+.date-weather .dw-day{color:var(--accent);}
+.date-weather .dw-weather{display:flex;align-items:center;gap:4px;margin-left:auto;font-size:0.78rem;}
+.date-weather .dw-temp{color:var(--gold);font-weight:500;}
+
+.word-nav{display:flex;gap:10px;margin-top:14px;}
+.wnbtn{
+  flex:1;padding:10px;border-radius:12px;border:1px solid var(--border);
+  background:transparent;color:var(--muted);cursor:pointer;
+  font-family:'DM Sans',sans-serif;font-size:0.85rem;transition:all .2s;
+}
+.wnbtn.primary{background:linear-gradient(135deg,rgba(255,209,102,0.15),rgba(255,209,102,0.05));border-color:rgba(255,209,102,0.3);color:var(--gold);}
+
+/* WRITING */
+.sentence-prompt{
+  font-family:'Playfair Display',serif;font-size:1.1rem;
+  line-height:1.6;color:var(--text);margin-bottom:5px;
+}
+.sentence-ko{font-size:0.82rem;color:var(--muted);margin-bottom:14px;}
+.write-input{
+  width:100%;background:var(--surface2);border:1px solid var(--border);
+  border-radius:12px;padding:14px;color:var(--text);
+  font-family:'DM Mono',monospace;font-size:0.88rem;resize:none;min-height:68px;
+  transition:border-color .2s;outline:none;
+}
+.write-input:focus{border-color:rgba(76,201,240,0.4);}
+.check-btn{
+  width:100%;margin-top:10px;padding:13px;border-radius:12px;
+  border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:0.9rem;font-weight:500;
+  background:linear-gradient(135deg,var(--blue),#7b5ea7);color:#fff;
+  transition:all .25s;box-shadow:0 4px 15px rgba(76,201,240,0.2);
+}
+.check-btn:active{transform:scale(0.98);}
+.write-feedback{
+  margin-top:12px;padding:14px;border-radius:12px;font-size:0.85rem;line-height:1.7;
+  display:none;
+}
+.write-feedback.correct{background:rgba(6,214,160,0.1);border:1px solid rgba(6,214,160,0.25);color:var(--green);}
+.write-feedback.wrong{background:rgba(255,107,107,0.08);border:1px solid rgba(255,107,107,0.2);color:#ff9a9a;}
+.write-feedback.show{display:block;}
+.next-sent{margin-top:10px;width:100%;padding:11px;border-radius:12px;border:1px solid var(--border);background:transparent;color:var(--muted);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:0.85rem;display:none;}
+.next-sent.show{display:block;}
+
+/* QUIZ */
+.quiz-progress{display:flex;gap:5px;margin-bottom:16px;}
+.qp-dot{flex:1;height:4px;border-radius:2px;background:var(--surface2);transition:background .3s;}
+.qp-dot.done{background:var(--green);}
+.qp-dot.current{background:var(--accent);}
+.quiz-q{font-size:1rem;font-weight:500;line-height:1.5;margin-bottom:16px;}
+.quiz-word-hint{font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--gold);margin-bottom:4px;}
+.quiz-type-badge{font-size:0.72rem;color:var(--muted);font-family:'DM Mono',monospace;margin-bottom:10px;}
+.options{display:grid;grid-template-columns:1fr 1fr;gap:8px;}
+.opt{
+  padding:13px 10px;border-radius:12px;border:1px solid var(--border);
+  background:var(--surface2);cursor:pointer;font-family:'DM Sans',sans-serif;
+  font-size:0.85rem;text-align:center;transition:all .2s;color:var(--text);
+}
+.opt:active{transform:scale(0.97);}
+.opt.correct{background:rgba(6,214,160,0.15);border-color:rgba(6,214,160,0.4);color:var(--green);}
+.opt.wrong{background:rgba(255,107,107,0.12);border-color:rgba(255,107,107,0.3);color:var(--accent);}
+.opt.reveal{background:rgba(6,214,160,0.1);border-color:rgba(6,214,160,0.3);color:var(--green);}
+.quiz-result{text-align:center;margin-top:8px;font-size:0.85rem;color:var(--muted);min-height:22px;}
+.quiz-next{width:100%;margin-top:12px;padding:12px;border-radius:12px;border:1px solid rgba(6,214,160,0.3);cursor:pointer;font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:500;background:rgba(6,214,160,0.08);color:var(--green);display:none;}
+.quiz-next.show{display:block;}
+.quiz-final{text-align:center;padding:24px 0;}
+.quiz-score{font-family:'Playfair Display',serif;font-size:3rem;color:var(--gold);}
+.quiz-score-label{font-size:0.85rem;color:var(--muted);margin-top:4px;}
+.quiz-restart{margin-top:18px;padding:12px 28px;border-radius:50px;border:none;cursor:pointer;font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:500;background:linear-gradient(135deg,var(--accent),#ff9f43);color:#fff;box-shadow:0 4px 15px rgba(255,107,107,0.3);}
+
+/* AI */
+.ai-notice{
+  font-size:0.75rem;color:var(--muted);text-align:center;
+  margin-bottom:12px;padding:9px 12px;background:rgba(255,209,102,0.05);
+  border-radius:8px;border:1px solid rgba(255,209,102,0.1);line-height:1.6;
+}
+.chat-box{
+  background:var(--surface2);border:1px solid var(--border);
+  border-radius:12px;min-height:220px;max-height:320px;overflow-y:auto;
+  padding:14px;margin-bottom:12px;
+  scrollbar-width:thin;
+}
+.chat-box::-webkit-scrollbar{width:3px;}
+.chat-box::-webkit-scrollbar-thumb{background:var(--surface2);border-radius:2px;}
+.msg{margin-bottom:12px;animation:fadeUp .2s ease;}
+.msg-role{font-size:0.7rem;font-family:'DM Mono',monospace;margin-bottom:4px;}
+.msg.user .msg-role{color:var(--blue);}
+.msg.ai .msg-role{color:var(--green);}
+.msg-text{
+  font-size:0.87rem;line-height:1.65;
+  padding:10px 13px;border-radius:10px;display:inline-block;max-width:94%;
+}
+.msg.user .msg-text{background:rgba(76,201,240,0.1);border:1px solid rgba(76,201,240,0.15);}
+.msg.ai .msg-text{background:rgba(6,214,160,0.07);border:1px solid rgba(6,214,160,0.12);}
+.chat-row{display:flex;gap:8px;}
+.chat-input{
+  flex:1;background:var(--surface2);border:1px solid var(--border);
+  border-radius:12px;padding:12px;color:var(--text);
+  font-family:'DM Sans',sans-serif;font-size:0.88rem;outline:none;
+  transition:border-color .2s;
+}
+.chat-input:focus{border-color:rgba(76,201,240,0.35);}
+.chat-send{
+  padding:12px 16px;border-radius:12px;border:none;cursor:pointer;
+  background:linear-gradient(135deg,var(--blue),#7b5ea7);color:#fff;
+  font-size:1.1rem;transition:all .25s;box-shadow:0 3px 12px rgba(76,201,240,0.2);
+}
+.chat-send:disabled{opacity:0.4;cursor:not-allowed;}
+.chat-send:active:not(:disabled){transform:scale(0.95);}
+.quick-q{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:10px;}
+.qq{
+  padding:5px 11px;border-radius:50px;border:1px solid var(--border);
+  background:transparent;color:var(--muted);cursor:pointer;
+  font-family:'DM Sans',sans-serif;font-size:0.75rem;transition:all .2s;
+}
+.qq:hover{background:var(--surface2);color:var(--text);}
+
+/* STREAK */
+.day-streak{display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--surface);border:1px solid var(--border);border-radius:12px;margin-bottom:12px;}
+.streak-icon{font-size:1.4rem;}
+.streak-info{flex:1;}
+.streak-label{font-size:0.7rem;color:var(--muted);}
+.streak-val{font-size:1rem;font-weight:500;color:var(--gold);}
+.prog-bar-wrap{height:4px;background:var(--surface2);border-radius:3px;margin-top:5px;}
+.prog-bar{height:4px;border-radius:3px;background:linear-gradient(90deg,var(--accent),var(--gold));transition:width .5s ease;}
+
+.spinner{display:inline-block;width:15px;height:15px;border:2px solid rgba(255,255,255,0.2);border-top-color:#fff;border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle;}
+@keyframes spin{to{transform:rotate(360deg);}}
+
+/* PASSWORD SCREEN */
+#pw-screen{
+  position:fixed;inset:0;z-index:999;
+  background:var(--bg);
+  display:flex;align-items:center;justify-content:center;
+}
+.pw-box{
+  width:320px;padding:36px 28px;
+  background:var(--surface);border:1px solid var(--border);
+  border-radius:24px;text-align:center;
+}
+.pw-box h2{
+  font-family:'Playfair Display',serif;font-size:1.6rem;
+  background:linear-gradient(135deg,#ff6b6b,#ffd166);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:6px;
+}
+.pw-box p{font-size:0.82rem;color:var(--muted);margin-bottom:22px;}
+.pw-input{
+  width:100%;background:var(--surface2);border:1px solid var(--border);
+  border-radius:12px;padding:13px 16px;color:var(--text);
+  font-family:'DM Sans',sans-serif;font-size:1rem;outline:none;
+  text-align:center;letter-spacing:2px;transition:border-color .2s;
+  margin-bottom:12px;
+}
+.pw-input:focus{border-color:rgba(255,107,107,0.4);}
+.pw-btn{
+  width:100%;padding:13px;border-radius:12px;border:none;cursor:pointer;
+  font-family:'DM Sans',sans-serif;font-size:0.95rem;font-weight:500;
+  background:linear-gradient(135deg,var(--accent),#ff9f43);color:#fff;
+  box-shadow:0 4px 15px rgba(255,107,107,0.3);transition:all .25s;
+}
+.pw-btn:active{transform:scale(0.98);}
+.pw-error{font-size:0.8rem;color:var(--accent);margin-top:10px;min-height:18px;}
+
+.sec-title{font-family:'Playfair Display',serif;font-size:1.15rem;margin-bottom:14px;}
+.sec-title span{color:var(--accent);}
+</style>
+</head>
+<body>
+<div id="pw-screen">
+  <div class="pw-box">
+    <h2>English Today ✦</h2>
+    <p>비밀번호를 입력하세요</p>
+    <input class="pw-input" type="password" id="pwInput" placeholder="비밀번호 입력" onkeydown="if(event.key==='Enter')checkPw()" />
+    <button class="pw-btn" onclick="checkPw()">입장하기</button>
+    <div class="pw-error" id="pwError"></div>
+  </div>
+</div>
+
+<div class="app" id="mainApp" style="display:none;">
+
+  <div class="header">
+    <h1>English Today ✦</h1>
+    <p>오늘도 한 걸음, 영어와 가까워지기</p>
+  </div>
+
+  <div class="day-streak">
+    <div class="streak-icon">🔥</div>
+    <div class="streak-info">
+      <div class="streak-label">오늘의 학습 진도</div>
+      <div class="streak-val" id="streakVal">0 / 3 완료</div>
+      <div class="prog-bar-wrap"><div class="prog-bar" id="progBar" style="width:0%"></div></div>
+    </div>
+  </div>
+
+  <div class="level-wrap">
+    <button class="lbtn active" onclick="setLevel('입문',this)">🌱 입문</button>
+    <button class="lbtn" onclick="setLevel('초급',this)">🌿 초급</button>
+    <button class="lbtn" onclick="setLevel('중급',this)">🌳 중급</button>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="showSec('words',this)">📖 단어</button>
+    <button class="tab" onclick="showSec('writing',this)">✍️ 따라쓰기</button>
+    <button class="tab" onclick="showSec('quiz',this)">🎯 퀴즈</button>
+    <button class="tab" onclick="showSec('ai',this)">🤖 AI 질문</button>
+  </div>
+
+  <!-- WORDS -->
+  <div class="sec active" id="sec-words">
+    <div class="date-weather">
+      <span class="dw-date" id="dwDate"></span>
+      <span class="dw-day" id="dwDay"></span>
+      <span style="color:var(--accent);font-size:0.75rem;font-family:'DM Mono',monospace">✦ 매일 자동변경</span>
+      <div class="dw-weather"><span id="dwIcon"></span><span class="dw-temp" id="dwTemp"></span></div>
+    </div>
+    <div class="card word-card" id="wordCard">
+      <div class="word-num" id="wNum">01 / 05</div>
+      <div class="word-en" id="wEn"></div>
+      <div class="word-ko" id="wKo"></div>
+      <div><span class="word-pos" id="wPos"></span></div>
+      <div class="word-ex" id="wEx"></div>
+      <div class="word-ex-ko" id="wExKo"></div>
+      <div class="idiom-section" id="idiomSection">
+        <div class="idiom-label">📌 관련 숙어</div>
+        <div id="idiomList"></div>
+      </div>
+    </div>
+    <div class="word-dots" id="wordDots"></div>
+    <div class="word-nav" style="margin-top:12px;">
+      <button class="wnbtn" onclick="prevWord()">← 이전</button>
+      <button class="wnbtn primary" onclick="nextWord()">다음 →</button>
+    </div>
+  </div>
+
+  <!-- WRITING -->
+  <div class="sec" id="sec-writing">
+    <div class="sec-title">문장 <span>따라쓰기</span></div>
+    <div class="card">
+      <div class="sentence-prompt" id="sentPrompt"></div>
+      <div class="sentence-ko" id="sentKo"></div>
+      <textarea class="write-input" id="writeInput" placeholder="여기에 영어 문장을 입력하세요..." rows="2"></textarea>
+      <button class="check-btn" onclick="checkWriting()">✓ 확인하기</button>
+      <div class="write-feedback" id="writeFeedback"></div>
+      <button class="next-sent" id="nextSentBtn" onclick="nextSentence()">다음 문장 →</button>
+    </div>
+    <div class="card" style="font-size:0.82rem;color:var(--muted);line-height:1.6;">
+      💡 <strong style="color:var(--text);">팁:</strong> 대소문자와 마침표까지 똑같이! 반복이 실력입니다.
+    </div>
+  </div>
+
+  <!-- QUIZ -->
+  <div class="sec" id="sec-quiz">
+    <div class="sec-title">오늘의 <span>퀴즈</span></div>
+    <div class="card" id="quizCard">
+      <div class="quiz-progress" id="quizProgress"></div>
+      <div id="quizInner"></div>
+    </div>
+  </div>
+
+  <!-- AI -->
+  <div class="sec" id="sec-ai">
+    <div class="sec-title">🤖 AI <span>영어 선생님</span></div>
+    <div class="ai-notice">
+      💰 전송 버튼을 눌러야만 API 크레딧 소모 · 응답 최소화 설정됨
+    </div>
+    <div class="quick-q">
+      <button class="qq" onclick="quickAsk(this)">이 단어 예문 더 알려줘</button>
+      <button class="qq" onclick="quickAsk(this)">발음 어떻게 해?</button>
+      <button class="qq" onclick="quickAsk(this)">비슷한 단어 알려줘</button>
+      <button class="qq" onclick="quickAsk(this)">오늘 배운 거 정리해줘</button>
+    </div>
+    <div class="card" style="padding:0;">
+      <div class="chat-box" id="chatBox">
+        <div class="msg ai">
+          <div class="msg-role">✦ AI 선생님</div>
+          <div class="msg-text">안녕하세요! 영어 공부 중 궁금한 점이 있으면 뭐든 물어보세요 😊</div>
+        </div>
+      </div>
+      <div style="padding:12px;">
+        <div class="chat-row">
+          <input class="chat-input" id="chatInput" placeholder="궁금한 거 물어보세요..." onkeydown="if(event.key==='Enter')sendChat()">
+          <button class="chat-send" id="chatSend" onclick="sendChat()">↑</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+<script>
+// ── 비밀번호 설정 (여기서 변경하세요) ──
+const APP_PASSWORD = 'English2025!';
+
+function checkPw(){
+  const val = document.getElementById('pwInput').value;
+  if(val === APP_PASSWORD){
+    document.getElementById('pw-screen').style.display = 'none';
+    document.getElementById('mainApp').style.display = 'block';
+  } else {
+    const err = document.getElementById('pwError');
+    err.textContent = '비밀번호가 틀렸습니다.';
+    document.getElementById('pwInput').value = '';
+    setTimeout(()=>err.textContent='', 2000);
+  }
+}
+
+// ── 날짜 기반 단어 순환 ──
+// 오늘 날짜(YYYYMMDD)를 숫자로 변환해 단어 풀에서 5개씩 순환
+function getTodayOffset(poolSize) {
+  const d = new Date();
+  const key = d.getFullYear()*10000 + (d.getMonth()+1)*100 + d.getDate();
+  const setsCount = Math.floor(poolSize / 5);
+  return (key % setsCount) * 5;
+}
+function getTodayWords(pool) {
+  const offset = getTodayOffset(pool.length);
+  return pool.slice(offset, offset + 5);
+}
+function getTodayDateLabel() {
+  const d = new Date();
+  return `${d.getMonth()+1}월 ${d.getDate()}일`;
+}
+
+const DAYS = ['일요일','월요일','화요일','수요일','목요일','금요일','토요일'];
+function initDateWeather(){
+  const d = new Date();
+  document.getElementById('dwDate').textContent = `${d.getMonth()+1}월 ${d.getDate()}일`;
+  document.getElementById('dwDay').textContent = DAYS[d.getDay()];
+  // 날씨: Open-Meteo 무료 API (위치 자동 감지)
+  if(navigator.geolocation){
+    navigator.geolocation.getCurrentPosition(pos=>{
+      const {latitude:lat,longitude:lon}=pos.coords;
+      fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=temperature_2m,weathercode&timezone=auto`)
+        .then(r=>r.json()).then(data=>{
+          const temp=Math.round(data.current.temperature_2m);
+          const code=data.current.weathercode;
+          const icon=code===0?'☀️':code<=3?'⛅':code<=48?'🌫️':code<=67?'🌧️':code<=77?'❄️':code<=82?'🌦️':'⛈️';
+          document.getElementById('dwIcon').textContent=icon;
+          document.getElementById('dwTemp').textContent=`${temp}°C`;
+        }).catch(()=>{});
+    },()=>{
+      document.getElementById('dwIcon').textContent='🌤️';
+      document.getElementById('dwTemp').textContent='';
+    });
+  }
+}
+
+const DATA = {
+  '입문': {
+    words: [
+      {en:'apple',ko:'사과',pos:'명사',ex:'I eat an <apple> every morning.',exKo:'나는 매일 아침 사과를 먹어요.',idioms:[{en:'apple of one\'s eye',ko:'눈에 넣어도 안 아픈 존재'},{en:'an apple a day',ko:'매일 사과 하나 (건강 비결)'},{en:'bad apple',ko:'집단을 망치는 사람'}]},
+      {en:'happy',ko:'행복한',pos:'형용사',ex:'She looks very <happy> today.',exKo:'그녀는 오늘 매우 행복해 보여요.',idioms:[{en:'happy-go-lucky',ko:'태평한, 낙천적인'},{en:'happy hour',ko:'할인 시간대'},{en:'trigger-happy',ko:'충동적인, 성급한'}]},
+      {en:'water',ko:'물',pos:'명사',ex:'Please give me some <water>.',exKo:'물 좀 주세요.',idioms:[{en:'water under the bridge',ko:'이미 지나간 일'},{en:'in hot water',ko:'곤경에 처한'},{en:'test the waters',ko:'분위기를 떠보다'}]},
+      {en:'big',ko:'큰',pos:'형용사',ex:'That is a <big> house!',exKo:'저건 정말 큰 집이에요!',idioms:[{en:'big deal',ko:'대단한 일, 별거 아닌 일'},{en:'big picture',ko:'큰 그림, 전체적인 관점'},{en:'big shot',ko:'유력한 사람, 거물'}]},
+      {en:'run',ko:'달리다',pos:'동사',ex:'I like to <run> in the park.',exKo:'나는 공원에서 달리기를 좋아해요.',idioms:[{en:'run out of',ko:'~이 떨어지다'},{en:'in the long run',ko:'결국, 장기적으로'},{en:'run into',ko:'우연히 만나다'}]},
+      {en:'book',ko:'책',pos:'명사',ex:'I read a <book> before bed.',exKo:'나는 자기 전에 책을 읽어요.',idioms:[{en:'by the book',ko:'원칙대로, 정석대로'},{en:'hit the books',ko:'공부하다'},{en:'open book',ko:'숨김없는 사람'}]},
+      {en:'cold',ko:'추운',pos:'형용사',ex:'It is very <cold> today.',exKo:'오늘 매우 춥네요.',idioms:[{en:'cold shoulder',ko:'냉담하게 대하다'},{en:'in cold blood',ko:'냉혹하게, 계획적으로'},{en:'cold feet',ko:'겁이 나다, 망설이다'}]},
+      {en:'eat',ko:'먹다',pos:'동사',ex:'Let\'s <eat> lunch together.',exKo:'같이 점심 먹어요.',idioms:[{en:'eat one\'s words',ko:'한 말을 취소하다'},{en:'eat out',ko:'외식하다'},{en:'bite to eat',ko:'간단히 먹을 것'}]},
+      {en:'friend',ko:'친구',pos:'명사',ex:'She is my best <friend>.',exKo:'그녀는 내 가장 친한 친구예요.',idioms:[{en:'fair-weather friend',ko:'좋을 때만 나타나는 친구'},{en:'friend in need',ko:'어려울 때 친구가 진짜 친구'},{en:'make friends',ko:'친구를 사귀다'}]},
+      {en:'good',ko:'좋은',pos:'형용사',ex:'That is a <good> idea!',exKo:'그거 좋은 생각이에요!',idioms:[{en:'for good',ko:'영원히, 완전히'},{en:'good for nothing',ko:'쓸모없는'},{en:'as good as',ko:'~나 다름없는'}]},
+      {en:'home',ko:'집',pos:'명사',ex:'I go <home> after school.',exKo:'나는 학교 후 집에 가요.',idioms:[{en:'home sweet home',ko:'집이 최고야'},{en:'hit home',ko:'가슴에 와 닿다'},{en:'feel at home',ko:'편안함을 느끼다'}]},
+      {en:'kind',ko:'친절한',pos:'형용사',ex:'She is very <kind> to everyone.',exKo:'그녀는 모두에게 매우 친절해요.',idioms:[{en:'kind of',ko:'어느 정도, 좀'},{en:'in kind',ko:'현물로, 같은 방식으로'},{en:'one of a kind',ko:'유일무이한'}]},
+      {en:'love',ko:'사랑하다',pos:'동사',ex:'I <love> my family.',exKo:'나는 내 가족을 사랑해요.',idioms:[{en:'fall in love',ko:'사랑에 빠지다'},{en:'love at first sight',ko:'첫눈에 반하다'},{en:'for the love of',ko:'~을 위해서라도'}]},
+      {en:'music',ko:'음악',pos:'명사',ex:'I listen to <music> every day.',exKo:'나는 매일 음악을 들어요.',idioms:[{en:'face the music',ko:'결과를 감수하다'},{en:'music to one\'s ears',ko:'듣기 좋은 말'},{en:'set the tone',ko:'분위기를 정하다'}]},
+      {en:'new',ko:'새로운',pos:'형용사',ex:'I bought a <new> bag.',exKo:'나는 새 가방을 샀어요.',idioms:[{en:'brand new',ko:'완전히 새로운'},{en:'new blood',ko:'새로운 인재'},{en:'turn over a new leaf',ko:'새 출발하다'}]},
+      {en:'open',ko:'열다',pos:'동사',ex:'Please <open> the window.',exKo:'창문을 열어주세요.',idioms:[{en:'open-minded',ko:'열린 마음의, 개방적인'},{en:'open up',ko:'마음을 열다, 털어놓다'},{en:'wide open',ko:'활짝 열린, 무방비 상태'}]},
+      {en:'play',ko:'놀다',pos:'동사',ex:'Children <play> in the park.',exKo:'아이들이 공원에서 놀아요.',idioms:[{en:'play it safe',ko:'안전하게 하다'},{en:'play by ear',ko:'상황 봐서 하다'},{en:'fair play',ko:'공정한 행동'}]},
+      {en:'quiet',ko:'조용한',pos:'형용사',ex:'The library is very <quiet>.',exKo:'도서관은 매우 조용해요.',idioms:[{en:'quiet down',ko:'조용히 하다'},{en:'keep quiet',ko:'침묵을 지키다'},{en:'on the quiet',ko:'몰래, 남몰래'}]},
+      {en:'school',ko:'학교',pos:'명사',ex:'I walk to <school> every day.',exKo:'나는 매일 학교까지 걸어가요.',idioms:[{en:'old school',ko:'구식의, 전통적인'},{en:'school of thought',ko:'사상적 학파'},{en:'school of hard knocks',ko:'인생의 쓴맛'}]},
+      {en:'tired',ko:'피곤한',pos:'형용사',ex:'I feel <tired> after work.',exKo:'일 끝나고 피곤해요.',idioms:[{en:'tired out',ko:'완전히 지친'},{en:'sick and tired',ko:'진절머리 나는'},{en:'dog-tired',ko:'몹시 피곤한'}]},
+    ],
+    sentences: [
+      {en:'I like coffee.',ko:'나는 커피를 좋아합니다.'},
+      {en:'She is my friend.',ko:'그녀는 내 친구예요.'},
+      {en:'The cat is cute.',ko:'그 고양이는 귀여워요.'},
+      {en:'I go to school.',ko:'나는 학교에 가요.'},
+      {en:'He reads a book.',ko:'그는 책을 읽어요.'},
+    ],
+    quiz: [
+      {type:'뜻 맞추기',word:'apple',q:'apple의 뜻은?',opts:['사과','바나나','오렌지','포도'],ans:0},
+      {type:'영어 찾기',word:'행복한',q:'"행복한"을 영어로?',opts:['angry','sad','happy','tired'],ans:2},
+      {type:'빈칸 채우기',word:'water',q:'I drink ___ every day.',opts:['fire','water','food','air'],ans:1},
+      {type:'뜻 맞추기',word:'big',q:'big의 반대말은?',opts:['fast','small','loud','heavy'],ans:1},
+      {type:'영어 찾기',word:'달리다',q:'"달리다"를 영어로?',opts:['walk','sleep','run','swim'],ans:2},
+    ]
+  },
+  '초급': {
+    words: [
+      {en:'adventure',ko:'모험',pos:'명사',ex:'Life is a great <adventure>.',exKo:'삶은 위대한 모험입니다.',idioms:[{en:'adventure awaits',ko:'모험이 기다리고 있다'},{en:'go on an adventure',ko:'모험을 떠나다'},{en:'spirit of adventure',ko:'모험심'}]},
+      {en:'confident',ko:'자신감 있는',pos:'형용사',ex:'She gave a <confident> speech.',exKo:'그녀는 자신감 있는 연설을 했어요.',idioms:[{en:'feel confident about',ko:'~에 자신감을 느끼다'},{en:'confident in oneself',ko:'자기 자신을 믿다'},{en:'project confidence',ko:'자신감을 드러내다'}]},
+      {en:'improve',ko:'향상시키다',pos:'동사',ex:'I want to <improve> my English.',exKo:'나는 영어를 향상시키고 싶어요.',idioms:[{en:'room for improvement',ko:'개선의 여지'},{en:'improve on',ko:'~을 개선하다'},{en:'continuous improvement',ko:'지속적인 개선'}]},
+      {en:'journey',ko:'여정',pos:'명사',ex:'The <journey> took three hours.',exKo:'그 여정은 세 시간이 걸렸어요.',idioms:[{en:'journey of a thousand miles',ko:'천 리 길도 한 걸음부터'},{en:'inner journey',ko:'내면의 여정'},{en:'on a journey',ko:'여정 중에'}]},
+      {en:'patient',ko:'인내심 있는',pos:'형용사',ex:'You need to be <patient>.',exKo:'인내심을 가져야 해요.',idioms:[{en:'patience is a virtue',ko:'인내는 미덕이다'},{en:'lose patience',ko:'인내심을 잃다'},{en:'try one\'s patience',ko:'인내심을 시험하다'}]},
+      {en:'achieve',ko:'달성하다',pos:'동사',ex:'Hard work helps you <achieve> your goals.',exKo:'노력하면 목표를 달성할 수 있어요.',idioms:[{en:'achieve a goal',ko:'목표를 달성하다'},{en:'high achiever',ko:'뛰어난 성취자'},{en:'achieve success',ko:'성공을 거두다'}]},
+      {en:'balance',ko:'균형',pos:'명사',ex:'You need a good <balance> in life.',exKo:'삶에서 좋은 균형이 필요해요.',idioms:[{en:'work-life balance',ko:'일과 삶의 균형'},{en:'strike a balance',ko:'균형을 잡다'},{en:'off balance',ko:'균형을 잃은'}]},
+      {en:'creative',ko:'창의적인',pos:'형용사',ex:'She is very <creative> with art.',exKo:'그녀는 예술에서 매우 창의적이에요.',idioms:[{en:'think outside the box',ko:'창의적으로 생각하다'},{en:'creative block',ko:'창작의 벽'},{en:'creative freedom',ko:'창작의 자유'}]},
+      {en:'describe',ko:'묘사하다',pos:'동사',ex:'Can you <describe> what happened?',exKo:'무슨 일이 있었는지 묘사해줄 수 있어요?',idioms:[{en:'beyond description',ko:'형언할 수 없는'},{en:'defy description',ko:'묘사하기 어렵다'},{en:'in vivid detail',ko:'생생하게'}]},
+      {en:'energy',ko:'에너지',pos:'명사',ex:'Exercise gives you more <energy>.',exKo:'운동은 에너지를 더 줘요.',idioms:[{en:'full of energy',ko:'에너지가 넘치는'},{en:'bundle of energy',ko:'에너지 덩어리'},{en:'conserve energy',ko:'에너지를 아끼다'}]},
+      {en:'familiar',ko:'익숙한',pos:'형용사',ex:'That song sounds <familiar>.',exKo:'그 노래 익숙하게 들려요.',idioms:[{en:'familiar face',ko:'낯익은 얼굴'},{en:'be familiar with',ko:'~에 익숙하다'},{en:'ring a bell',ko:'기억이 나다'}]},
+      {en:'gather',ko:'모이다',pos:'동사',ex:'Friends <gather> for the party.',exKo:'친구들이 파티를 위해 모였어요.',idioms:[{en:'gather momentum',ko:'힘이 붙다'},{en:'gather one\'s thoughts',ko:'생각을 정리하다'},{en:'gather dust',ko:'먼지가 쌓이다, 방치되다'}]},
+      {en:'honest',ko:'정직한',pos:'형용사',ex:'Always be <honest> with yourself.',exKo:'자신에게 항상 정직하세요.',idioms:[{en:'honest to goodness',ko:'진심으로, 솔직히'},{en:'be honest about',ko:'~에 솔직하다'},{en:'brutally honest',ko:'냉혹할 만큼 솔직한'}]},
+      {en:'imagine',ko:'상상하다',pos:'동사',ex:'<Imagine> a world without stress.',exKo:'스트레스 없는 세상을 상상해보세요.',idioms:[{en:'imagine that',ko:'그것 좀 봐, 놀랍군'},{en:'beyond imagination',ko:'상상을 초월한'},{en:'use your imagination',ko:'상상력을 발휘하다'}]},
+      {en:'valuable',ko:'소중한, 가치 있는',pos:'형용사',ex:'Time is a <valuable> resource.',exKo:'시간은 소중한 자원이에요.',idioms:[{en:'valuable lesson',ko:'소중한 교훈'},{en:'of great value',ko:'매우 가치 있는'},{en:'add value',ko:'가치를 더하다'}]},
+      {en:'culture',ko:'문화',pos:'명사',ex:'Korean <culture> is very unique.',exKo:'한국 문화는 매우 독특해요.',idioms:[{en:'culture shock',ko:'문화 충격'},{en:'pop culture',ko:'대중문화'},{en:'company culture',ko:'기업 문화'}]},
+      {en:'prepare',ko:'준비하다',pos:'동사',ex:'Please <prepare> for the meeting.',exKo:'회의를 준비해주세요.',idioms:[{en:'prepare for the worst',ko:'최악을 대비하다'},{en:'well-prepared',ko:'잘 준비된'},{en:'prepare in advance',ko:'미리 준비하다'}]},
+      {en:'nervous',ko:'긴장한',pos:'형용사',ex:'I feel <nervous> before exams.',exKo:'시험 전에 긴장돼요.',idioms:[{en:'nervous wreck',ko:'신경이 곤두선 사람'},{en:'bundle of nerves',ko:'몹시 긴장한 사람'},{en:'get on one\'s nerves',ko:'신경을 건드리다'}]},
+      {en:'support',ko:'지지하다',pos:'동사',ex:'Friends <support> each other.',exKo:'친구들은 서로를 지지해요.',idioms:[{en:'moral support',ko:'정신적 지지'},{en:'lend support',ko:'지원을 제공하다'},{en:'support system',ko:'지원 체계'}]},
+      {en:'unique',ko:'독특한',pos:'형용사',ex:'Everyone has a <unique> story.',exKo:'모두가 독특한 이야기를 가지고 있어요.',idioms:[{en:'one of a kind',ko:'유일무이한'},{en:'uniquely positioned',ko:'독특한 위치에 있는'},{en:'stand out',ko:'두드러지다'}]},
+    ],
+    sentences: [
+      {en:'I have been studying English for two years.',ko:'나는 2년간 영어를 공부해왔어요.'},
+      {en:'Could you speak more slowly, please?',ko:'조금 더 천천히 말씀해 주시겠어요?'},
+      {en:'She enjoys reading books on weekends.',ko:'그녀는 주말에 독서를 즐겨요.'},
+      {en:'We should try our best every day.',ko:'우리는 매일 최선을 다해야 해요.'},
+      {en:"The weather is nice today, isn't it?",ko:'오늘 날씨 좋지요, 그렇죠?'},
+    ],
+    quiz: [
+      {type:'뜻 맞추기',word:'adventure',q:'adventure의 뜻은?',opts:['여행','모험','경험','도전'],ans:1},
+      {type:'영어 찾기',word:'향상시키다',q:'"향상시키다"를 영어로?',opts:['remove','improve','ignore','reduce'],ans:1},
+      {type:'빈칸 채우기',word:'patient',q:'Be ___ — good things take time.',opts:['angry','patient','nervous','lazy'],ans:1},
+      {type:'뜻 맞추기',word:'confident',q:'confident의 뜻은?',opts:['혼란스러운','소심한','자신감 있는','피곤한'],ans:2},
+      {type:'영어 찾기',word:'여정',q:'"여정"을 영어로?',opts:['journey','memory','secret','future'],ans:0},
+    ]
+  },
+  '중급': {
+    words: [
+      {en:'eloquent',ko:'말을 잘 하는, 유창한',pos:'형용사',ex:'He is an <eloquent> speaker.',exKo:'그는 매우 유창한 연설가예요.',idioms:[{en:'eloquent silence',ko:'웅변적인 침묵'},{en:'speak eloquently',ko:'유창하게 말하다'},{en:'put it eloquently',ko:'멋지게 표현하다'}]},
+      {en:'perseverance',ko:'인내, 끈기',pos:'명사',ex:'Success requires <perseverance>.',exKo:'성공에는 끈기가 필요합니다.',idioms:[{en:'persist through adversity',ko:'역경을 뚫고 나아가다'},{en:'stay the course',ko:'끝까지 버티다'},{en:'keep at it',ko:'계속 밀고 나가다'}]},
+      {en:'ambiguous',ko:'모호한',pos:'형용사',ex:'The instructions were <ambiguous>.',exKo:'그 지시사항들이 모호했어요.',idioms:[{en:'morally ambiguous',ko:'도덕적으로 모호한'},{en:'leave ambiguous',ko:'모호하게 남겨두다'},{en:'clear as mud',ko:'전혀 명확하지 않은'}]},
+      {en:'innovative',ko:'혁신적인',pos:'형용사',ex:'They launched an <innovative> product.',exKo:'그들은 혁신적인 제품을 출시했어요.',idioms:[{en:'cutting edge',ko:'최첨단의'},{en:'ahead of the curve',ko:'시대를 앞서가는'},{en:'game changer',ko:'판도를 바꾸는 것'}]},
+      {en:'contemplate',ko:'심사숙고하다',pos:'동사',ex:'I need time to <contemplate> this.',exKo:'이것을 심사숙고할 시간이 필요해요.',idioms:[{en:'food for thought',ko:'생각할 거리'},{en:'mull it over',ko:'곰곰이 생각하다'},{en:'sleep on it',ko:'하룻밤 자고 결정하다'}]},
+      {en:'resilient',ko:'회복력이 강한',pos:'형용사',ex:'She is remarkably <resilient>.',exKo:'그녀는 놀라울 정도로 회복력이 강해요.',idioms:[{en:'bounce back',ko:'회복하다'},{en:'tough as nails',ko:'매우 강인한'},{en:'weather the storm',ko:'어려움을 헤쳐나가다'}]},
+      {en:'meticulous',ko:'꼼꼼한',pos:'형용사',ex:'He is <meticulous> about details.',exKo:'그는 세부 사항에 꼼꼼해요.',idioms:[{en:'dot the i\'s and cross the t\'s',ko:'꼼꼼하게 처리하다'},{en:'leave no stone unturned',ko:'모든 수단을 다 쓰다'},{en:'pay attention to detail',ko:'세부사항에 주의하다'}]},
+      {en:'alleviate',ko:'완화하다',pos:'동사',ex:'Exercise can <alleviate> stress.',exKo:'운동은 스트레스를 완화할 수 있어요.',idioms:[{en:'ease the burden',ko:'부담을 덜다'},{en:'take the edge off',ko:'긴장을 풀다'},{en:'pour oil on troubled waters',ko:'분쟁을 완화하다'}]},
+      {en:'profound',ko:'심오한',pos:'형용사',ex:'The book had a <profound> impact.',exKo:'그 책은 심오한 영향을 미쳤어요.',idioms:[{en:'profound effect',ko:'심오한 영향'},{en:'deep and profound',ko:'깊고 심오한'},{en:'strike a chord',ko:'깊은 공감을 얻다'}]},
+      {en:'pragmatic',ko:'실용적인',pos:'형용사',ex:'We need a <pragmatic> approach.',exKo:'우리는 실용적인 접근이 필요해요.',idioms:[{en:'down to earth',ko:'현실적인'},{en:'get down to brass tacks',ko:'핵심에 집중하다'},{en:'practical minded',ko:'실용적 사고방식'}]},
+      {en:'diligent',ko:'부지런한',pos:'형용사',ex:'She is a <diligent> student.',exKo:'그녀는 부지런한 학생이에요.',idioms:[{en:'burn the midnight oil',ko:'밤새 공부하다'},{en:'nose to the grindstone',ko:'열심히 일하다'},{en:'go the extra mile',ko:'한발 더 나아가다'}]},
+      {en:'foster',ko:'육성하다',pos:'동사',ex:'We must <foster> creativity in children.',exKo:'아이들의 창의력을 육성해야 해요.',idioms:[{en:'nurture talent',ko:'재능을 키우다'},{en:'foster growth',ko:'성장을 촉진하다'},{en:'bring out the best',ko:'최고를 끌어내다'}]},
+      {en:'compelling',ko:'설득력 있는',pos:'형용사',ex:'She made a <compelling> argument.',exKo:'그녀는 설득력 있는 주장을 했어요.',idioms:[{en:'make a compelling case',ko:'설득력 있는 주장을 하다'},{en:'hard to resist',ko:'거부하기 어려운'},{en:'beyond a shadow of doubt',ko:'의심할 여지 없이'}]},
+      {en:'nuance',ko:'미묘한 차이',pos:'명사',ex:'Language is full of <nuance>.',exKo:'언어는 미묘한 차이로 가득해요.',idioms:[{en:'subtle nuance',ko:'미묘한 차이'},{en:'lost in translation',ko:'번역 과정에서 잃어버린 뉘앙스'},{en:'read between the lines',ko:'행간을 읽다'}]},
+      {en:'scrutinize',ko:'면밀히 검토하다',pos:'동사',ex:'Please <scrutinize> the contract.',exKo:'계약서를 면밀히 검토해주세요.',idioms:[{en:'under the microscope',ko:'면밀히 조사받는'},{en:'fine-tooth comb',ko:'세밀히 살피다'},{en:'look into',ko:'자세히 조사하다'}]},
+      {en:'empathy',ko:'공감',pos:'명사',ex:'<Empathy> is key to relationships.',exKo:'공감은 관계의 열쇠예요.',idioms:[{en:'put oneself in someone\'s shoes',ko:'상대방 입장에서 생각하다'},{en:'feel for someone',ko:'~에게 공감하다'},{en:'emotional intelligence',ko:'감성 지능'}]},
+      {en:'coherent',ko:'일관성 있는',pos:'형용사',ex:'The plan was clear and <coherent>.',exKo:'그 계획은 명확하고 일관성 있었어요.',idioms:[{en:'all of a piece',ko:'일관된'},{en:'hang together',ko:'논리적으로 맞다'},{en:'on the same page',ko:'같은 생각을 하다'}]},
+      {en:'mitigate',ko:'줄이다, 경감하다',pos:'동사',ex:'We should <mitigate> the risks.',exKo:'위험을 경감해야 해요.',idioms:[{en:'damage control',ko:'피해 최소화'},{en:'soften the blow',ko:'충격을 완화하다'},{en:'cut one\'s losses',ko:'손실을 최소화하다'}]},
+      {en:'tenacious',ko:'끈질긴',pos:'형용사',ex:'He is a <tenacious> negotiator.',exKo:'그는 끈질긴 협상가예요.',idioms:[{en:'hang in there',ko:'버티다, 포기하지 않다'},{en:'like a dog with a bone',ko:'끈질기게 물고 늘어지다'},{en:'never give up',ko:'절대 포기하지 않다'}]},
+      {en:'articulate',ko:'명확하게 표현하다',pos:'동사',ex:'She can <articulate> her ideas well.',exKo:'그녀는 자신의 생각을 명확하게 표현해요.',idioms:[{en:'find the words',ko:'말을 찾다'},{en:'get one\'s point across',ko:'요점을 전달하다'},{en:'speak one\'s mind',ko:'솔직하게 말하다'}]},
+    ],
+    sentences: [
+      {en:'Despite the challenges, she persevered and succeeded.',ko:'어려움에도 불구하고, 그녀는 끈기 있게 성공했어요.'},
+      {en:'The ambiguous phrasing led to a misunderstanding.',ko:'모호한 표현이 오해를 불러일으켰어요.'},
+      {en:'Innovative thinking drives progress in any field.',ko:'혁신적인 사고가 어떤 분야에서도 발전을 이끌어요.'},
+      {en:'His eloquent argument convinced the entire audience.',ko:'그의 유창한 주장이 전체 청중을 설득했어요.'},
+      {en:"It's worth taking time to contemplate major decisions.",ko:'중요한 결정은 심사숙고할 가치가 있어요.'},
+    ],
+    quiz: [
+      {type:'뜻 맞추기',word:'eloquent',q:'eloquent의 뜻은?',opts:['조용한','유창한','거친','예의 바른'],ans:1},
+      {type:'영어 찾기',word:'인내',q:'"인내, 끈기"를 영어로?',opts:['patience','perseverance','performance','persistence'],ans:1},
+      {type:'빈칸 채우기',word:'ambiguous',q:"The contract terms were ___; nobody understood them.",opts:['clear','ambiguous','detailed','final'],ans:1},
+      {type:'뜻 맞추기',word:'contemplate',q:'contemplate의 뜻은?',opts:['무시하다','즐기다','심사숙고하다','포기하다'],ans:2},
+      {type:'영어 찾기',word:'혁신적인',q:'"혁신적인"을 영어로?',opts:['traditional','innovative','ordinary','classic'],ans:1},
+    ]
+  }
+};
+
+let currentLevel='입문', wordIdx=0, sentIdx=0, quizIdx=0, quizScore=0, quizAnswered=false;
+let completedSections=new Set(), chatHistory=[];
+let todayWords=[];
+
+function getTodayWords(pool){
+  const d=new Date();
+  const key=d.getFullYear()*10000+(d.getMonth()+1)*100+d.getDate();
+  const setsCount=Math.floor(pool.length/5);
+  const offset=(key%setsCount)*5;
+  return pool.slice(offset,offset+5);
+}
+function getTodayDateLabel(){
+  const d=new Date();
+  return `${d.getMonth()+1}월 ${d.getDate()}일 오늘의 단어`;
+}
+
+function setLevel(lv,btn){
+  currentLevel=lv;
+  document.querySelectorAll('.lbtn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  wordIdx=0;sentIdx=0;quizIdx=0;quizScore=0;
+  todayWords=getTodayWords(DATA[currentLevel].words);
+  completedSections.clear();updateProgress();
+  renderWord();renderSentence();renderQuiz();
+}
+
+function showSec(id,btn){
+  document.querySelectorAll('.sec').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+  document.getElementById('sec-'+id).classList.add('active');
+  btn.classList.add('active');
+}
+
+function renderWord(){
+  const w=todayWords[wordIdx];
+  document.getElementById('wNum').textContent=String(wordIdx+1).padStart(2,'0')+' / 05';
+  document.getElementById('wEn').textContent=w.en;
+  document.getElementById('wKo').textContent=w.ko;
+  document.getElementById('wPos').textContent=w.pos;
+  document.getElementById('wEx').innerHTML=w.ex.replace(/<(.+?)>/g,'<span>$1</span>');
+  document.getElementById('wExKo').textContent=w.exKo;
+  // 숙어 렌더링
+  const idiomList=document.getElementById('idiomList');
+  if(w.idioms&&w.idioms.length){
+    document.getElementById('idiomSection').style.display='block';
+    idiomList.innerHTML=w.idioms.map(id=>`<div class="idiom-item"><div class="idiom-en">${id.en}</div><div class="idiom-ko">${id.ko}</div></div>`).join('');
+  } else {
+    document.getElementById('idiomSection').style.display='none';
+  }
+  const dc=document.getElementById('wordDots');dc.innerHTML='';
+  for(let i=0;i<5;i++){
+    const d=document.createElement('div');
+    d.className='dot'+(i===wordIdx?' active':'');
+    d.onclick=(i=>{return()=>{wordIdx=i;renderWord();};})(i);
+    dc.appendChild(d);
+  }
+}
+function prevWord(){if(wordIdx>0){wordIdx--;renderWord();}}
+function nextWord(){
+  if(wordIdx<4){wordIdx++;renderWord();}
+  else if(!completedSections.has('words')){completedSections.add('words');updateProgress();}
+}
+
+function renderSentence(){
+  const s=DATA[currentLevel].sentences[sentIdx];
+  document.getElementById('sentPrompt').textContent=s.en;
+  document.getElementById('sentKo').textContent=s.ko;
+  document.getElementById('writeInput').value='';
+  document.getElementById('writeFeedback').className='write-feedback';
+  document.getElementById('nextSentBtn').className='next-sent';
+}
+function checkWriting(){
+  const input=document.getElementById('writeInput').value.trim();
+  const correct=DATA[currentLevel].sentences[sentIdx].en;
+  const fb=document.getElementById('writeFeedback');
+  if(!input){fb.textContent='문장을 입력해주세요!';fb.className='write-feedback wrong show';return;}
+  if(input===correct){
+    fb.innerHTML='✅ 완벽해요! 정확히 맞았습니다.';
+    fb.className='write-feedback correct show';
+    if(!completedSections.has('writing')&&sentIdx>=2){completedSections.add('writing');updateProgress();}
+  } else if(input.toLowerCase()===correct.toLowerCase()){
+    fb.innerHTML='⚡ 거의 맞았어요! 대소문자를 확인해보세요.<br><strong>정답:</strong> '+correct;
+    fb.className='write-feedback wrong show';
+  } else {
+    fb.innerHTML='❌ 다시 시도해보세요.<br><strong>정답:</strong> <span style="color:var(--green)">'+correct+'</span>';
+    fb.className='write-feedback wrong show';
+  }
+  document.getElementById('nextSentBtn').className='next-sent show';
+}
+function nextSentence(){sentIdx=(sentIdx+1)%DATA[currentLevel].sentences.length;renderSentence();}
+
+function renderQuiz(){
+  quizIdx=0;quizScore=0;quizAnswered=false;renderQuizQ();
+}
+function renderQuizQ(){
+  const qs=DATA[currentLevel].quiz;
+  const prog=document.getElementById('quizProgress');
+  prog.innerHTML='';
+  qs.forEach((_,i)=>{
+    const d=document.createElement('div');
+    d.className='qp-dot'+(i<quizIdx?' done':i===quizIdx?' current':'');
+    prog.appendChild(d);
+  });
+  if(quizIdx>=qs.length){
+    document.getElementById('quizInner').innerHTML=`
+      <div class="quiz-final">
+        <div class="quiz-score">${quizScore}<span style="font-size:1.4rem;color:var(--muted)">/${qs.length}</span></div>
+        <div class="quiz-score-label">${quizScore===qs.length?'🎉 완벽한 점수!':quizScore>=3?'👍 잘 하셨어요!':'💪 다시 도전해보세요!'}</div>
+        <button class="quiz-restart" onclick="renderQuiz()">다시 풀기</button>
+      </div>`;
+    if(!completedSections.has('quiz')){completedSections.add('quiz');updateProgress();}
+    return;
+  }
+  const q=qs[quizIdx];quizAnswered=false;
+  document.getElementById('quizInner').innerHTML=`
+    <div class="quiz-type-badge"># ${q.type}</div>
+    <div class="quiz-word-hint">${q.word}</div>
+    <div class="quiz-q">${q.q}</div>
+    <div class="options" id="opts">
+      ${q.opts.map((o,i)=>`<button class="opt" onclick="answerQuiz(${i})">${o}</button>`).join('')}
+    </div>
+    <div class="quiz-result" id="qResult"></div>
+    <button class="quiz-next" id="qNext" onclick="nextQuiz()">다음 문제 →</button>`;
+}
+function answerQuiz(i){
+  if(quizAnswered)return;quizAnswered=true;
+  const q=DATA[currentLevel].quiz[quizIdx];
+  document.querySelectorAll('.opt').forEach((o,idx)=>{
+    if(idx===q.ans)o.classList.add(i===q.ans?'correct':'reveal');
+    else if(idx===i)o.classList.add('wrong');
+  });
+  if(i===q.ans){quizScore++;document.getElementById('qResult').textContent='✅ 정답이에요!';}
+  else{document.getElementById('qResult').textContent='❌ 틀렸어요. 초록색이 정답입니다.';}
+  document.getElementById('qNext').className='quiz-next show';
+}
+function nextQuiz(){quizIdx++;renderQuizQ();}
+
+function updateProgress(){
+  const n=completedSections.size;
+  document.getElementById('streakVal').textContent=n+' / 3 완료';
+  document.getElementById('progBar').style.width=(n/3*100)+'%';
+}
+
+function quickAsk(btn){document.getElementById('chatInput').value=btn.textContent;sendChat();}
+
+async function sendChat(){
+  const input=document.getElementById('chatInput');
+  const msg=input.value.trim();if(!msg)return;
+  const ctx=`현재 레벨: ${currentLevel}. 오늘의 단어: ${DATA[currentLevel].words.map(w=>w.en+'('+w.ko+')').join(', ')}.`;
+  input.value='';
+  appendMsg('user',msg);
+  chatHistory.push({role:'user',content:msg});
+  const btn=document.getElementById('chatSend');
+  btn.disabled=true;btn.innerHTML='<span class="spinner"></span>';
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',
+      headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',
+        max_tokens:300,
+        system:`당신은 친절한 영어 선생님입니다. ${ctx} 짧고 명확하게 3-4문장으로만 답하세요. 한국어와 영어를 적절히 섞어 설명하세요.`,
+        messages:chatHistory
+      })
+    });
+    const data=await res.json();
+    const reply=data.content?.[0]?.text||'답변을 가져오지 못했어요.';
+    chatHistory.push({role:'assistant',content:reply});
+    appendMsg('ai',reply);
+  }catch(e){appendMsg('ai','⚠️ 오류가 발생했어요. 잠시 후 다시 시도해주세요.');}
+  btn.disabled=false;btn.innerHTML='↑';
+}
+
+function appendMsg(role,text){
+  const box=document.getElementById('chatBox');
+  const div=document.createElement('div');div.className='msg '+role;
+  div.innerHTML=`<div class="msg-role">${role==='user'?'👤 나':'✦ AI 선생님'}</div><div class="msg-text">${text.replace(/\n/g,'<br>')}</div>`;
+  box.appendChild(div);box.scrollTop=box.scrollHeight;
+}
+
+todayWords=getTodayWords(DATA[currentLevel].words);
+initDateWeather();
+renderWord();renderSentence();renderQuiz();
+
+</script>
+</body>
+</html>
